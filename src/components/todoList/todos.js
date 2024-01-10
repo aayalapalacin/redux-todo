@@ -9,7 +9,7 @@ function Todos() {
 
     const dispatch = useDispatch();
     const [inputValue,setInputValue]=useState("");
-
+    let colorArray = ["orange","blue","green","purple","red"];
 
    useEffect(()=>{
        let completedCount = 0;
@@ -31,7 +31,7 @@ function Todos() {
 
                         if (e.keyCode == 13){
                             dispatch(addTodoItem(
-                                {id: value.length, text: inputValue, completed: false, color: 'blue'}
+                                {id: value.length, text: inputValue, completed: false, color: 'red'}
                             ));
                            setInputValue("");
 
@@ -45,10 +45,33 @@ function Todos() {
             <ul>
                 {value.length > 0 ?
                     value.map((todoObj, valueMapIndex) => {
+                        let newColorArray = []
+                        if(todoObj.color != undefined){
+                            newColorArray= colorArray.filter((item,i)=> item != todoObj.color );
+                            newColorArray.unshift(todoObj.color)
+
+                        }
+
+
                         return (
-                            <li key={todoObj.id}>
-                                {todoObj.text}
-                            </li>
+                            <div key={todoObj.id}>
+                                <li>
+                                    {todoObj.text}
+                                </li>
+                                <label htmlFor="colors">Choose a color:</label>
+
+                                <select name="colors" id="colors">
+                                    {newColorArray.map((item,i)=>{
+                                        return(
+                                            <>
+                                                <option value="color">{item}</option>
+                                            </>
+                                        );
+                                    })}
+
+                                </select>
+                            </div>
+
                         );
                     })
                     :
