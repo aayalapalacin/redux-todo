@@ -53,6 +53,12 @@ export const todoListSlice = createSlice({
             const searchArray = state.value.filter((filterTodo)=> filterTodo.color[0] == color);
             state.filteredValue = searchArray;
         },
+        searchByActiveOrCompleted: (state,action)=>{
+            const {search}= action.payload;
+
+            const searchArray = state.value.filter((filterTodo)=> filterTodo.completed == search);
+            state.filteredValue = searchArray;
+        },
         clearFilter: (state)=>{
             state.filteredValue = [];
         }
@@ -70,6 +76,8 @@ export const {
     updateCompleted,
     updateAllCompleted,
     searchByColor,
-    clearFilter} = todoListSlice.actions
+    clearFilter,
+    searchByActiveOrCompleted
+} = todoListSlice.actions
 
 export default todoListSlice.reducer

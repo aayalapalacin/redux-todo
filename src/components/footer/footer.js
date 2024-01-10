@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import "./footer.css";
-import {updateAllCompleted,searchByColor, clearFilter} from "../../redux/todoList";
+import {updateAllCompleted,searchByColor, clearFilter, searchByActiveOrCompleted} from "../../redux/todoList";
 
 function Footer() {
 
@@ -10,6 +10,7 @@ function Footer() {
     let colorArray= ["orange","blue","green","purple","red"]
 
     const[checkedIndex,setCheckedIndex]=useState(-1);
+    const[searchCategory,setSearchCategory]=useState("");
 
     const handleMarkAllComplete = (action)=>{
 
@@ -19,11 +20,7 @@ function Footer() {
 
         let newArray = []
        valueCopy.forEach((copyItem)=> newArray.push({...copyItem,completed:action}))
-
-
             dispatch(updateAllCompleted({value:newArray}))
-
-
     }
     return (
         <div className="footer">
@@ -45,9 +42,31 @@ function Footer() {
             <div className="filterByStatus">
                 <h4>Filter by Status</h4>
                 <div className="filterStatusButtons">
-                    <span>All</span><br/>
-                    <span>Active</span><br/>
-                    <span>Completed</span>
+                    <button
+                        onClick={()=>{
+                            setSearchCategory("status")
+                            dispatch(clearFilter())
+
+                    }}
+                    >
+                        All
+                    </button><br/>
+                    <button
+                        onClick={()=>{
+                            setSearchCategory("status")
+                            dispatch(searchByActiveOrCompleted({search:false}));
+
+                    }}
+                    >
+                        Active</button><br/>
+                    <button
+                        onClick={()=>{
+                            setSearchCategory("status")
+                            dispatch(searchByActiveOrCompleted({search: true}))
+
+                    }}
+                    >
+                        Completed</button>
                 </div>
 
             </div>
@@ -71,7 +90,7 @@ function Footer() {
                             </div>
                             <input
                                 type="checkbox"
-                                checked={checkedIndex == index ? true : false}
+                                checked={checkedIndex == index && searchCategory == "color" ? true : false}
                                 id={color}
                                 name={color}
                                 value={color}
@@ -82,8 +101,7 @@ function Footer() {
                                     }
                                 }}
                                 onClick={()=> {
-
-
+                                    setSearchCategory("color")
                                     setCheckedIndex(index)
                                     dispatch(searchByColor({color: color}))
                                 }}
