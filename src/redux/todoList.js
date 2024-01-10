@@ -4,7 +4,8 @@ const initialState = {
     value: [ { id: 1, text: 'Learn React', completed: true,color: ["orange","blue","green","purple","red"]  },
         { id: 2, text: 'Learn Redux', completed: false, color: ["purple","orange","blue","green","red"] },
         { id: 3, text: 'Build something fun!', completed: true, color: ["blue","orange","green","purple","red"]}],
-    remainingTodos:0
+    remainingTodos:0,
+    filteredValue:[]
 }
 export const todoListSlice = createSlice({
     name: 'todoList',
@@ -45,12 +46,30 @@ export const todoListSlice = createSlice({
             const {value}= action.payload;
 
             state.value= value;
+        },
+        searchByColor: (state,action)=>{
+            const {color}= action.payload;
+
+            const searchArray = state.value.filter((filterTodo)=> filterTodo.color[0] == color);
+            state.filteredValue = searchArray;
+        },
+        clearFilter: (state)=>{
+            state.filteredValue = [];
         }
+
 
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addTodoItem ,calculateRemainingTodos,updateColor,deleteTodoItem,updateCompleted,updateAllCompleted} = todoListSlice.actions
+export const {
+    addTodoItem
+    ,calculateRemainingTodos
+    ,updateColor
+    ,deleteTodoItem,
+    updateCompleted,
+    updateAllCompleted,
+    searchByColor,
+    clearFilter} = todoListSlice.actions
 
 export default todoListSlice.reducer

@@ -1,13 +1,15 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import "./footer.css";
-import {updateAllCompleted} from "../../redux/todoList";
+import {updateAllCompleted,searchByColor, clearFilter} from "../../redux/todoList";
 
 function Footer() {
 
     const {value,remainingTodos}= useSelector(state => state.todoList);
     const dispatch = useDispatch();
     let colorArray= ["orange","blue","green","purple","red"]
+
+    const[checkedIndex,setCheckedIndex]=useState(-1);
 
     const handleMarkAllComplete = (action)=>{
 
@@ -28,7 +30,9 @@ function Footer() {
             <div className="actions">
                 <h4>Actions</h4>
                 <div className="actionButtons">
-                    <button onClick={()=>handleMarkAllComplete(true)}>Mark All Completed</button>
+                    <button onClick={()=> {
+                        handleMarkAllComplete(true)
+                    }}>Mark All Completed</button>
                     <br/>
                     <button onClick={()=>handleMarkAllComplete(false)}>Clear Completed</button>
                 </div>
@@ -65,7 +69,25 @@ function Footer() {
                             >
                                 1
                             </div>
-                            <input type="checkbox" id={color} name={color} value={color}/>
+                            <input
+                                type="checkbox"
+                                checked={checkedIndex == index ? true : false}
+                                id={color}
+                                name={color}
+                                value={color}
+                                onChange={()=> {
+                                    if (checkedIndex == index) {
+                                        setCheckedIndex(-1);
+                                        dispatch(clearFilter())
+                                    }
+                                }}
+                                onClick={()=> {
+
+
+                                    setCheckedIndex(index)
+                                    dispatch(searchByColor({color: color}))
+                                }}
+                            />
                             <label htmlFor={color}> {color}</label>
                         </div>
                     );

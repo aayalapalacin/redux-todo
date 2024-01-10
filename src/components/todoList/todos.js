@@ -4,7 +4,7 @@ import {addTodoItem,calculateRemainingTodos,updateColor,deleteTodoItem,updateCom
 
 import "./todos.css";
 function Todos() {
-    const {value}= useSelector(state => state.todoList);
+    const {value,filteredValue}= useSelector(state => state.todoList);
 
     const dispatch = useDispatch();
     const [inputValue,setInputValue]=useState("");
@@ -54,14 +54,11 @@ function Todos() {
             />
 
             <ul>
-                {value.length > 0 ?
-                    value.map((todoObj, valueMapIndex) => {
-
+                {value.length > 0?
+                    (filteredValue.length >0 ? filteredValue : value).map((todoObj, valueMapIndex) => {
                         return (
                             <div key={todoObj.id}>
-
                                 <li>
-
                                         <span
                                             onClick={()=> dispatch(updateCompleted({id:todoObj.id}))}
                                             style={{color:`${todoObj.completed ? "#00800082": "white"}`}}
