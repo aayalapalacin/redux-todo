@@ -41,7 +41,7 @@ function Todos() {
 
 
                             dispatch(addTodoItem(
-                                {id: lastTodoId+1, text: inputValue, completed: false, color: 'red'}
+                                {id: lastTodoId+1, text: inputValue, completed: false, color: ["orange","blue","green","purple","red"]}
                             ));
                             setInputValue("");
 
@@ -77,7 +77,7 @@ function Todos() {
                                             <
                                             >
                                                 <option
-
+                                                    style={{color:`${colorItem}`}}
                                                     value={colorItem}
                                                 >
                                                     {colorItem}
