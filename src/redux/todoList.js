@@ -40,12 +40,17 @@ export const todoListSlice = createSlice({
 
             const todoItemToUpdate = state.value.find((todoItem)=>todoItem.id == id);
             todoItemToUpdate.completed= !todoItemToUpdate.completed;
+        },
+        updateAllCompleted:(state,action)=>{
+            const {value}= action.payload;
+
+            state.value= value;
         }
 
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addTodoItem ,calculateRemainingTodos,updateColor,deleteTodoItem,updateCompleted} = todoListSlice.actions
+export const { addTodoItem ,calculateRemainingTodos,updateColor,deleteTodoItem,updateCompleted,updateAllCompleted} = todoListSlice.actions
 
 export default todoListSlice.reducer

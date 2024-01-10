@@ -2,4 +2,19 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+}
+
+.actionButtons{
+    display: block;
+}
+.filterColorContainer{
+    display: flex;
+    align-items: center;
+}
+.colorBox{
+    width: 1.5rem;
+    height: 1rem;
 }
