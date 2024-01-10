@@ -14,6 +14,11 @@ export const todoListSlice = createSlice({
 
             state.value = [...state.value,action.payload]
         },
+        deleteTodoItem: (state,action) => {
+            const {id}= action.payload;
+
+            state.value = [...state.value.filter(filteritem => filteritem.id != id)]
+        },
         calculateRemainingTodos: (state,action) => {
 
             state.remainingTodos = action.payload
@@ -35,6 +40,6 @@ export const todoListSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addTodoItem ,calculateRemainingTodos,updateColor} = todoListSlice.actions
+export const { addTodoItem ,calculateRemainingTodos,updateColor,deleteTodoItem} = todoListSlice.actions
 
 export default todoListSlice.reducer

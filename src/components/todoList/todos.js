@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {addTodoItem,calculateRemainingTodos,updateColor} from "../../redux/todoList";
+import {addTodoItem,calculateRemainingTodos,updateColor,deleteTodoItem} from "../../redux/todoList";
 
 import "./todos.css";
 function Todos() {
@@ -21,6 +21,9 @@ function Todos() {
         dispatch(calculateRemainingTodos(completedCount));
 
        },[value]);
+
+
+
     return (
         <div className="todos">
 
@@ -62,6 +65,7 @@ function Todos() {
                                 <label htmlFor="colors">Choose a color:</label>
 
                                 <select
+                                   style={{color:`${todoObj.color[0]}`}}
                                     name="colors"
                                     id="colors"
                                     value={todoObj.color[0]}
@@ -83,6 +87,7 @@ function Todos() {
                                     })}
 
                                 </select>
+                                <button onClick={()=>dispatch(deleteTodoItem({id:todoObj.id}))}>x</button>
                             </div>
 
                         );
