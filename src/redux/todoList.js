@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    value: [ { id: 0, text: 'Learn React', completed: true },
-        { id: 1, text: 'Learn Redux', completed: false, color: 'purple' },
-        { id: 2, text: 'Build something fun!', completed: true, color: 'blue' }],
+    value: [ { id: 1, text: 'Learn React', completed: true,color: ["orange","blue","green","purple","red"]  },
+        { id: 2, text: 'Learn Redux', completed: false, color: ["purple","orange","blue","green","red"] },
+        { id: 3, text: 'Build something fun!', completed: true, color: ["blue","orange","green","purple","red"]}],
     remainingTodos:0
 }
 export const todoListSlice = createSlice({
@@ -11,18 +11,30 @@ export const todoListSlice = createSlice({
     initialState,
     reducers: {
         addTodoItem: (state,action) => {
-            console.log(action,"action")
+
             state.value = [...state.value,action.payload]
         },
         calculateRemainingTodos: (state,action) => {
 
             state.remainingTodos = action.payload
         },
+        updateColor: (state,action)=>{
+            const {id,color} = action.payload;
+
+            const todoItemToUpdate = state.value.find((todoItem)=>todoItem.id == id);
+
+
+            if(todoItemToUpdate){
+                let newColorArray = []
+                newColorArray= [color,...todoItemToUpdate.color.filter((prevColorItem)=> prevColorItem != color )];
+                todoItemToUpdate.color= newColorArray;
+            }
+        }
 
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addTodoItem ,calculateRemainingTodos} = todoListSlice.actions
+export const { addTodoItem ,calculateRemainingTodos,updateColor} = todoListSlice.actions
 
 export default todoListSlice.reducer
