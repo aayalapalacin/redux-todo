@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {addTodoItem,calculateRemainingTodos,updateColor,deleteTodoItem} from "../../redux/todoList";
+import {addTodoItem,calculateRemainingTodos,updateColor,deleteTodoItem,updateCompleted} from "../../redux/todoList";
 
 import "./todos.css";
 function Todos() {
@@ -59,25 +59,33 @@ function Todos() {
 
                         return (
                             <div key={todoObj.id}>
+
                                 <li>
+
+                                        <span
+                                            onClick={()=> dispatch(updateCompleted({id:todoObj.id}))}
+                                            style={{color:`${todoObj.completed ? "#00800082": "white"}`}}
+                                            className="checkmark"
+                                        >
+                                            ✔
+                                        </span>
                                     {todoObj.text}
                                 </li>
                                 <label htmlFor="colors">Choose a color:</label>
 
                                 <select
-                                   style={{color:`${todoObj.color[0]}`}}
+                                    style={{color: `${todoObj.color[0]}`}}
                                     name="colors"
                                     id="colors"
                                     value={todoObj.color[0]}
-                                    onChange={(e)=>dispatch(updateColor({id:todoObj.id,color: e.target.value}))}
+                                    onChange={(e) => dispatch(updateColor({id: todoObj.id, color: e.target.value}))}
                                 >
-                                    {todoObj.color.map((colorItem,i)=>{
+                                    {todoObj.color.map((colorItem, i) => {
 
-                                        return(
-                                            <
-                                            >
+                                        return (
+                                            <>
                                                 <option
-                                                    style={{color:`${colorItem}`}}
+                                                    style={{color: `${colorItem}`}}
                                                     value={colorItem}
                                                 >
                                                     {colorItem}
@@ -87,7 +95,7 @@ function Todos() {
                                     })}
 
                                 </select>
-                                <button onClick={()=>dispatch(deleteTodoItem({id:todoObj.id}))}>x</button>
+                                <button onClick={() => dispatch(deleteTodoItem({id: todoObj.id}))}>x</button>
                             </div>
 
                         );

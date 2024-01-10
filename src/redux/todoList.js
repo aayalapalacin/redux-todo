@@ -34,12 +34,18 @@ export const todoListSlice = createSlice({
                 newColorArray= [color,...todoItemToUpdate.color.filter((prevColorItem)=> prevColorItem != color )];
                 todoItemToUpdate.color= newColorArray;
             }
+        },
+        updateCompleted: (state,action)=>{
+            const {id} = action.payload;
+
+            const todoItemToUpdate = state.value.find((todoItem)=>todoItem.id == id);
+            todoItemToUpdate.completed= !todoItemToUpdate.completed;
         }
 
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addTodoItem ,calculateRemainingTodos,updateColor,deleteTodoItem} = todoListSlice.actions
+export const { addTodoItem ,calculateRemainingTodos,updateColor,deleteTodoItem,updateCompleted} = todoListSlice.actions
 
 export default todoListSlice.reducer
