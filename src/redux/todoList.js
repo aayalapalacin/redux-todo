@@ -10,9 +10,9 @@ export const todoListSlice = createSlice({
     initialState,
     reducers: {
         addTodoItem: (state,action) => {
-            console.log(state.value[0],action,"before")
+
             state.value = [...state.value,action.payload]
-            console.log(state.value,"after")
+
 
 
         },

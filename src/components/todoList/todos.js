@@ -20,7 +20,7 @@ function Todos() {
     const [inputValue,setInputValue]=useState("");
 
 
-    const{data:allUsersTodos}=useGetUserTodoQuery("alexAyalaPalacin");
+    const{data:allUsersTodos, error, isLoading}=useGetUserTodoQuery("alexAyalaPalacin");
 
     const [createUser] = useCreateUserMutation();
     const [updateTodo]= useUpdateUserTodoMutation(value);
@@ -52,20 +52,16 @@ function Todos() {
 
 
     const handleCreateUser = async ()=>{
-
         try{
             const resp = await createUser();
-
             const status = resp.data.msg;
             if(status=="The user alexAyalaPalacin has been created successfully"){
                 updateTodo([{label:"example task",done:false}])
                 dispatch(addTodoItem({label:"example task",done:false}))
-
             }
             else{
                 console.log("POST not successful: ",status)
             }
-
         }
         catch(error){
         console.error("Error from Create User Fetch: ", error);
@@ -109,7 +105,7 @@ function Todos() {
 
 
             <ul className="todoUl">
-                {value.length > 0 ?
+                {value.length > 0 && !error ?
                     (filteredValue.length > 0 ? filteredValue : value).map((todoObj, valueMapIndex) => {
 
                         return (
@@ -151,7 +147,7 @@ function Todos() {
                         );
                     })
                     :
-                    "No todo items"
+                    <h1>  {error ? `Error fetching data:  ${error.message}. Click on create user button and then refresh`: isLoading ?  "Loading..." :"No todos"}</h1>
                 }
             </ul>
 
