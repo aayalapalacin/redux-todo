@@ -1,14 +1,15 @@
 import React from 'react'
-
+import "./navbar.css";
 function Navbar() {
     return (
         <div className="navbar">
             <nav>
-                <section>
-                    <h1>Redux Fundamentals Example</h1>
+                <div className="nav-title">
+                    <span className="nav-title-text">Redux Fundamentals Example</span>
+
+                </div>
 
 
-                </section>
             </nav>
 
         </div>

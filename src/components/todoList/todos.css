@@ -4,7 +4,55 @@
     border-radius: 54%;
     color: #00800082;
     font-size: 1.3rem;
+    margin:.7rem;
 }
 .checkmark:hover{
     cursor: pointer;
+}
+.todosLI{
+    list-style-type: none;
+
+}
+.liContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.border-bottom{
+    border-bottom: 0.2px solid #d3d3d37a !important;
+
+}
+
+.inputStyle{
+width: 99%;
+border: none;
+text-align: start;
+padding-bottom: 0.5rem;
+padding-top: 0.9rem;
+
+}
+select{
+    padding: 0.2rem;
+    border: 1.5px lightgray solid;
+
+}
+.deleteBtn{
+    background-color: white;
+    border:none;
+    color: #CC9A9A;
+}
+.userInput{
+    padding: 1rem;
+    font-size: 1.1rem;
+    width: 90%;
+    padding-left: 2rem;
+
+}
+.selectAndXContainer{
+display: flex;
+margin-right: 1rem;
+}
+.todoUl{
+padding-left:0px;
 }

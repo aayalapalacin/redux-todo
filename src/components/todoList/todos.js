@@ -27,72 +27,92 @@ function Todos() {
     return (
         <div className="todos">
 
-            <input
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={
-                    (e) => {
+            <div className="userInputContainer">
+                <input
+                    className="inputStyle userInput border-bottom"
+                    placeholder="What needs to be done?"
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={
+                        (e) => {
 
-                        if (e.keyCode == 13){
-                            const todosSortedById=[...value].sort((a,b)=> {
+                            if (e.keyCode == 13) {
+                                const todosSortedById = [...value].sort((a, b) => {
 
-                                return a.id - b.id
-                            })
-                            const lastTodoId = todosSortedById[todosSortedById.length-1].id
+                                    return a.id - b.id
+                                })
+                                const lastTodoId = todosSortedById[todosSortedById.length - 1].id
 
 
-                            dispatch(addTodoItem(
-                                {id: lastTodoId+1, text: inputValue, completed: false, color: ["orange","blue","green","purple","red"]}
-                            ));
-                            setInputValue("");
+                                dispatch(addTodoItem(
+                                    {
+                                        id: lastTodoId + 1,
+                                        text: inputValue,
+                                        completed: false,
+                                        color: ["orange", "blue", "green", "purple", "red"]
+                                    }
+                                ));
+                                setInputValue("");
 
+                            }
                         }
                     }
-                }
 
-                type="text"
-                value={inputValue}
-            />
+                    type="text"
+                    value={inputValue}
+                />
 
-            <ul>
-                {value.length > 0?
-                    (filteredValue.length >0 ? filteredValue : value).map((todoObj, valueMapIndex) => {
+            </div>
+
+
+            <ul className="todoUl">
+                {value.length > 0 ?
+                    (filteredValue.length > 0 ? filteredValue : value).map((todoObj, valueMapIndex) => {
                         return (
-                            <div key={todoObj.id}>
-                                <li>
+                            <div
+                                className={`liContainer ${valueMapIndex == value.length - 1 ? "" : "border-bottom"}`}
+                                key={todoObj.id}
+                            >
+                                <li
+                                    className="todosLI inputStyle "
+
+                                >
                                         <span
-                                            onClick={()=> dispatch(updateCompleted({id:todoObj.id}))}
-                                            style={{color:`${todoObj.completed ? "#00800082": "white"}`}}
+                                            onClick={() => dispatch(updateCompleted({id: todoObj.id}))}
+                                            style={{color: `${todoObj.completed ? "#00800082" : "white"}`}}
                                             className="checkmark"
                                         >
                                             ✔
                                         </span>
                                     {todoObj.text}
                                 </li>
-                                <label htmlFor="colors">Choose a color:</label>
 
-                                <select
-                                    style={{color: `${todoObj.color[0]}`}}
-                                    name="colors"
-                                    id="colors"
-                                    value={todoObj.color[0]}
-                                    onChange={(e) => dispatch(updateColor({id: todoObj.id, color: e.target.value}))}
-                                >
-                                    {todoObj.color.map((colorItem, i) => {
+                                <div className="selectAndXContainer">
+                                    <select
 
-                                        return (
-                                            <>
-                                                <option
-                                                    style={{color: `${colorItem}`}}
-                                                    value={colorItem}
-                                                >
-                                                    {colorItem}
-                                                </option>
-                                            </>
-                                        );
-                                    })}
+                                        style={{color: `${todoObj.color[0]}`}}
+                                        name="colors"
+                                        id="colors"
+                                        value={todoObj.color[0]}
+                                        onChange={(e) => dispatch(updateColor({id: todoObj.id, color: e.target.value}))}
+                                    >
+                                        {todoObj.color.map((colorItem, i) => {
 
-                                </select>
-                                <button onClick={() => dispatch(deleteTodoItem({id: todoObj.id}))}>x</button>
+                                            return (
+                                                <>
+                                                    <option
+                                                        style={{color: `${colorItem}`}}
+                                                        value={colorItem}
+                                                    >
+                                                        {colorItem}
+                                                    </option>
+                                                </>
+                                            );
+                                        })}
+
+                                    </select>
+                                    <button className="deleteBtn" onClick={() => dispatch(deleteTodoItem({id: todoObj.id}))}>x</button>
+                                </div>
+
                             </div>
 
                         );

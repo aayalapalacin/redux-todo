@@ -1,10 +1,12 @@
 .footer{
-    position: absolute;
+    position: relative;
     bottom: 0;
     width: 100%;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 1rem;
+    border-top: 0.2px solid #d3d3d37a;
+    padding-bottom: 1rem;
+    margin-top: 5rem;
 }
 
 .actionButtons{
@@ -17,4 +19,8 @@
 .colorBox{
     width: 1.5rem;
     height: 1rem;
+}
+h4{
+    margin-top: .5rem;
+    margin-bottom: .5rem;
 }

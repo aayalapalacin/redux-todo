@@ -1,0 +1,9 @@
+.navbar{
+    background-color: #764ABC;
+    padding: 1rem;
+}
+.nav-title-text{
+    font-size: 3rem;
+    font-weight: 500;
+    color: white;
+}
