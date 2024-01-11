@@ -19,7 +19,7 @@ function Footer() {
        value.forEach((todoItem)=> valueCopy.push(todoItem))
 
         let newArray = []
-       valueCopy.forEach((copyItem)=> newArray.push({...copyItem,completed:action}))
+       valueCopy.forEach((copyItem)=> newArray.push({...copyItem,done:action}))
             dispatch(updateAllCompleted({value:newArray}))
     }
     return (

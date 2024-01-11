@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {addTodoItem,calculateRemainingTodos,updateColor,deleteTodoItem,updateCompleted} from "../../redux/todoList";
-import {useGetAllUsersQuery,useGetUserTodoQuery,useCreateUserMutation} from "../../features/todo/apiSlice";
+import {useGetUserTodoQuery,useCreateUserMutation} from "../../features/todo/apiSlice";
 import "./todos.css";
 function Todos() {
     const {value,filteredValue}= useSelector(state => state.todoList);
@@ -13,7 +13,7 @@ function Todos() {
    useEffect(()=>{
        let completedCount = 0;
        value.forEach((todoValue,i)=>{
-           if(!todoValue.completed){
+           if(!todoValue.done){
                completedCount++;
            }
 
@@ -22,10 +22,7 @@ function Todos() {
 
        },[value]);
 
-    const{data:allUsersTodos}=useGetUserTodoQuery("Tomas");
-    const{data:allUsers}=useGetAllUsersQuery();
-    console.log(allUsersTodos,"allusers");
-    console.log(allUsers,"names");
+    const{data:allUsersTodos}=useGetUserTodoQuery("alexAyalaPalacin");
     const [createUser] = useCreateUserMutation();
 
     const handleCreateUser = ()=>{
@@ -53,8 +50,8 @@ function Todos() {
                                 dispatch(addTodoItem(
                                     {
                                         id: lastTodoId + 1,
-                                        text: inputValue,
-                                        completed: false,
+                                        label: inputValue,
+                                        done: false,
                                         color: ["orange", "blue", "green", "purple", "red"]
                                     }
                                 ));
@@ -85,12 +82,12 @@ function Todos() {
                                 >
                                         <span
                                             onClick={() => dispatch(updateCompleted({id: todoObj.id}))}
-                                            style={{color: `${todoObj.completed ? "#00800082" : "white"}`}}
+                                            style={{color: `${todoObj.done ? "#00800082" : "white"}`}}
                                             className="checkmark"
                                         >
                                             ✔
                                         </span>
-                                    {todoObj.text}
+                                    {todoObj.label}
                                 </li>
 
                                 <div className="selectAndXContainer">
