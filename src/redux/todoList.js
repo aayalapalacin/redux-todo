@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    value: [ { id: 1, label: 'Learn React', done: true,color: ["orange","blue","green","purple","red"]  },
-        { id: 2, label: 'Learn Redux', done: false, color: ["purple","orange","blue","green","red"] },
-        { id: 3, label: 'Build something fun!', done: true, color: ["blue","orange","green","purple","red"]}],
+    value: [ ],
     remainingTodos:0,
     filteredValue:[]
 }
@@ -12,8 +10,14 @@ export const todoListSlice = createSlice({
     initialState,
     reducers: {
         addTodoItem: (state,action) => {
-
+            console.log(state.value[0],action,"before")
             state.value = [...state.value,action.payload]
+            console.log(state.value,"after")
+
+
+        },
+        syncWithTodoApi:(state,action)=>{
+          state.value=action.payload;
         },
         deleteTodoItem: (state,action) => {
             const {id}= action.payload;
@@ -24,18 +28,7 @@ export const todoListSlice = createSlice({
 
             state.remainingTodos = action.payload
         },
-        updateColor: (state,action)=>{
-            const {id,color} = action.payload;
 
-            const todoItemToUpdate = state.value.find((todoItem)=>todoItem.id == id);
-
-
-            if(todoItemToUpdate){
-                let newColorArray = []
-                newColorArray= [color,...todoItemToUpdate.color.filter((prevColorItem)=> prevColorItem != color )];
-                todoItemToUpdate.color= newColorArray;
-            }
-        },
         updateCompleted: (state,action)=>{
             const {id} = action.payload;
 
@@ -47,12 +40,7 @@ export const todoListSlice = createSlice({
 
             state.value= value;
         },
-        searchByColor: (state,action)=>{
-            const {color}= action.payload;
 
-            const searchArray = state.value.filter((filterTodo)=> filterTodo.color[0] == color);
-            state.filteredValue = searchArray;
-        },
         searchByActiveOrCompleted: (state,action)=>{
             const {search}= action.payload;
 
@@ -71,13 +59,13 @@ export const todoListSlice = createSlice({
 export const {
     addTodoItem
     ,calculateRemainingTodos
-    ,updateColor
     ,deleteTodoItem,
     updateCompleted,
     updateAllCompleted,
     searchByColor,
     clearFilter,
-    searchByActiveOrCompleted
+    searchByActiveOrCompleted,
+    syncWithTodoApi
 } = todoListSlice.actions
 
 export default todoListSlice.reducer

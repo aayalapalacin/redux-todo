@@ -1,13 +1,30 @@
 import React,{useState,useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {addTodoItem,calculateRemainingTodos,updateColor,deleteTodoItem,updateCompleted} from "../../redux/todoList";
-import {useGetUserTodoQuery,useCreateUserMutation} from "../../features/todo/apiSlice";
+import {addTodoItem,
+    calculateRemainingTodos,
+    syncWithTodoApi,
+    deleteTodoItem,
+    updateCompleted}
+    from "../../redux/todoList";
+
+import {useGetUserTodoQuery,
+    useCreateUserMutation,
+    useUpdateUserTodoMutation,
+    useDeleteUserMutation}
+    from "../../features/todo/apiSlice";
 import "./todos.css";
 function Todos() {
     const {value,filteredValue}= useSelector(state => state.todoList);
 
     const dispatch = useDispatch();
     const [inputValue,setInputValue]=useState("");
+
+
+    const{data:allUsersTodos}=useGetUserTodoQuery("alexAyalaPalacin");
+
+    const [createUser] = useCreateUserMutation();
+    const [updateTodo]= useUpdateUserTodoMutation(value);
+    const [deleteUser]= useDeleteUserMutation();
 
 
    useEffect(()=>{
@@ -19,18 +36,46 @@ function Todos() {
 
        })
         dispatch(calculateRemainingTodos(completedCount));
+       updateTodo(value);
+
+
 
        },[value]);
 
-    const{data:allUsersTodos}=useGetUserTodoQuery("alexAyalaPalacin");
-    const [createUser] = useCreateUserMutation();
 
-    const handleCreateUser = ()=>{
-        createUser();
+    useEffect(()=>{
+        if(allUsersTodos && allUsersTodos != undefined ){
+                 dispatch(syncWithTodoApi(allUsersTodos));
+        }
+
+    },[allUsersTodos])
+
+
+    const handleCreateUser = async ()=>{
+
+        try{
+            const resp = await createUser();
+
+            const status = resp.data.msg;
+            if(status=="The user alexAyalaPalacin has been created successfully"){
+                updateTodo([{label:"example task",done:false}])
+                dispatch(addTodoItem({label:"example task",done:false}))
+
+            }
+            else{
+                console.log("POST not successful: ",status)
+            }
+
+        }
+        catch(error){
+        console.error("Error from Create User Fetch: ", error);
+        }
+
     }
+
     return (
         <div className="todos">
-<button onClick={()=> handleCreateUser()}>create user</button>
+            <button onClick={()=> handleCreateUser()}>create user</button>
             <div className="userInputContainer">
                 <input
                     className="inputStyle userInput border-bottom"
@@ -40,21 +85,16 @@ function Todos() {
                         (e) => {
 
                             if (e.keyCode == 13) {
-                                const todosSortedById = [...value].sort((a, b) => {
-
-                                    return a.id - b.id
-                                })
-                                const lastTodoId = todosSortedById[todosSortedById.length - 1].id
-
 
                                 dispatch(addTodoItem(
                                     {
-                                        id: lastTodoId + 1,
                                         label: inputValue,
                                         done: false,
-                                        color: ["orange", "blue", "green", "purple", "red"]
+                                        id:1
                                     }
                                 ));
+
+
                                 setInputValue("");
 
                             }
@@ -71,6 +111,7 @@ function Todos() {
             <ul className="todoUl">
                 {value.length > 0 ?
                     (filteredValue.length > 0 ? filteredValue : value).map((todoObj, valueMapIndex) => {
+
                         return (
                             <div
                                 className={`liContainer ${valueMapIndex == value.length - 1 ? "" : "border-bottom"}`}
@@ -91,30 +132,18 @@ function Todos() {
                                 </li>
 
                                 <div className="selectAndXContainer">
-                                    <select
+                                    <button className="deleteBtn" onClick={() => {
+                                        console.log(value.length,"hey")
+                                            if(value.length == 1){
+                                                dispatch(deleteTodoItem({id: todoObj.id}))
+                                                deleteUser();
+                                                handleCreateUser();
+                                            }
+                                            else {
+                                                dispatch(deleteTodoItem({id: todoObj.id}))
+                                            }
 
-                                        style={{color: `${todoObj.color[0]}`}}
-                                        name="colors"
-                                        id="colors"
-                                        value={todoObj.color[0]}
-                                        onChange={(e) => dispatch(updateColor({id: todoObj.id, color: e.target.value}))}
-                                    >
-                                        {todoObj.color.map((colorItem, i) => {
-
-                                            return (
-                                                <>
-                                                    <option
-                                                        style={{color: `${colorItem}`}}
-                                                        value={colorItem}
-                                                    >
-                                                        {colorItem}
-                                                    </option>
-                                                </>
-                                            );
-                                        })}
-
-                                    </select>
-                                    <button className="deleteBtn" onClick={() => dispatch(deleteTodoItem({id: todoObj.id}))}>x</button>
+                                    }}>x</button>
                                 </div>
 
                             </div>
