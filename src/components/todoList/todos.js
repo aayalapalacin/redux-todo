@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {addTodoItem,calculateRemainingTodos,updateColor,deleteTodoItem,updateCompleted} from "../../redux/todoList";
-
+import {useGetAllUsersQuery,useGetUserTodoQuery,useCreateUserMutation} from "../../features/todo/apiSlice";
 import "./todos.css";
 function Todos() {
     const {value,filteredValue}= useSelector(state => state.todoList);
@@ -22,11 +22,18 @@ function Todos() {
 
        },[value]);
 
+    const{data:allUsersTodos}=useGetUserTodoQuery("Tomas");
+    const{data:allUsers}=useGetAllUsersQuery();
+    console.log(allUsersTodos,"allusers");
+    console.log(allUsers,"names");
+    const [createUser] = useCreateUserMutation();
 
-
+    const handleCreateUser = ()=>{
+        createUser();
+    }
     return (
         <div className="todos">
-
+<button onClick={()=> handleCreateUser()}>create user</button>
             <div className="userInputContainer">
                 <input
                     className="inputStyle userInput border-bottom"
