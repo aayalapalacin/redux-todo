@@ -1,25 +1,25 @@
 import React,{useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import "./footer.css";
-import {updateAllCompleted,searchByColor, clearFilter, searchByActiveOrCompleted} from "../../redux/todoList";
-
+import {updateAllCompleted,searchByColor, clearFilter, searchByActiveOrCompleted} from "../../redux/todoList.ts";
+import {TodoItem} from "../../redux/todoList.ts"
 function Footer() {
 
     const {value,remainingTodos}= useSelector(state => state.todoList);
     const dispatch = useDispatch();
-    let colorArray= ["orange","blue","green","purple","red"]
+    let colorArray:string[]= ["orange","blue","green","purple","red"]
 
-    const[checkedIndex,setCheckedIndex]=useState(-1);
-    const[searchCategory,setSearchCategory]=useState("");
+    const[checkedIndex,setCheckedIndex]=useState<number>(-1);
+    const[searchCategory,setSearchCategory]=useState<string>("");
 
-    const handleMarkAllComplete = (action)=>{
+    const handleMarkAllComplete = (action:boolean)=>{
 
-        let valueCopy = []
+        let valueCopy:TodoItem[] = []
 
-       value.forEach((todoItem)=> valueCopy.push(todoItem))
+       value.forEach((todoItem:TodoItem)=> valueCopy.push(todoItem))
 
-        let newArray = []
-       valueCopy.forEach((copyItem)=> newArray.push({...copyItem,completed:action}))
+        let newArray:TodoItem[] = []
+       valueCopy.forEach((copyItem:TodoItem)=> newArray.push({...copyItem,completed:action}))
             dispatch(updateAllCompleted({value:newArray}))
     }
     return (
@@ -73,7 +73,7 @@ function Footer() {
             <div className="filterByColor">
             <h4>Filter by Color</h4>
 
-                {colorArray.map((color, index) => {
+                {colorArray.map((color:string, index:number) => {
                     return (
                         <div
                             key={`${color}-${index}`}
@@ -90,12 +90,12 @@ function Footer() {
                             </div>
                             <input
                                 type="checkbox"
-                                checked={checkedIndex == index && searchCategory == "color" ? true : false}
+                                checked={checkedIndex === index && searchCategory === "color" ? true : false}
                                 id={color}
                                 name={color}
                                 value={color}
                                 onChange={()=> {
-                                    if (checkedIndex == index) {
+                                    if (checkedIndex === index) {
                                         setCheckedIndex(-1);
                                         dispatch(clearFilter())
                                     }

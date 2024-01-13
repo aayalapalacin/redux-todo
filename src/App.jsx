@@ -1,9 +1,9 @@
 
 import './App.css';
 import React from 'react';
-import Navbar from "./components/navbar/navbar";
-import Todos from "./components/todoList/todos";
-import Footer from "./components/footer/footer";
+import Navbar from "./components/navbar/navbar.tsx";
+import Todos from "./components/todoList/todos.tsx";
+import Footer from "./components/footer/footer.tsx";
 
 
 
